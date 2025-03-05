@@ -1,11 +1,38 @@
-Hello ashirvad
+-- Create the database
+CREATE DATABASE CityDb;
+GO
+
+-- Use the newly created database
+USE CityDb;
+GO
+
+-- Create the City table
+CREATE TABLE City (
+    CityId INT PRIMARY KEY IDENTITY(1,1), 
+    CityCode VARCHAR(10),
+    CityName VARCHAR(100),
+    State VARCHAR(100),
+    AirportCharge DECIMAL(18, 2)
+);
+GO
+
+-- Insert dummy data for Indian city airports
+INSERT INTO City (CityCode, CityName, State, AirportCharge)
+VALUES 
+    ('DEL', 'Delhi', 'Delhi', 500.00),
+    ('BOM', 'Mumbai', 'Maharashtra', 450.00),
+    ('BLR', 'Bengaluru', 'Karnataka', 400.00),
+    ('MAA', 'Chennai', 'Tamil Nadu', 350.00),
+    ('CCU', 'Kolkata', 'West Bengal', 300.00),
+    ('HYD', 'Hyderabad', 'Telangana', 400.00),
+    ('AMD', 'Ahmedabad', 'Gujarat', 320.00),
+    ('COK', 'Kochi', 'Kerala', 270.00),
+    ('PNQ', 'Pune', 'Maharashtra', 350.00),
+    ('BLR', 'Bengaluru', 'Karnataka', 400.00);
+GO
+
+-- Select all data from the City table
+SELECT * FROM City;
+GO
 
 
-Happy learning 
-
-Welcome to GitHub
-
-Bro khi ghumne chle
-
-
-Aaja haveli pe
