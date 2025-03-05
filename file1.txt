@@ -9,10 +9,11 @@ GO
 -- Create the City table
 CREATE TABLE City (
     CityId INT PRIMARY KEY IDENTITY(1,1), 
-    CityCode VARCHAR(10),
-    CityName VARCHAR(100),
-    State VARCHAR(100),
-    AirportCharge DECIMAL(18, 2)
+    CityCode VARCHAR(10) NOT NULL,
+    CityName VARCHAR(100) NOT NULL,
+    State VARCHAR(100) NOT NULL,
+    AirportCharge DECIMAL(18, 2) NOT NULL,
+    IsActive BIT NOT NULL CONSTRAINT DF_IsActive DEFAULT 1
 );
 GO
 
@@ -35,21 +36,117 @@ GO
 SELECT * FROM City;
 GO
 
--- Alter the table to add NOT NULL constraints
-ALTER TABLE City
-ALTER COLUMN CityCode VARCHAR(10) NOT NULL;
-GO
-
-ALTER TABLE City
-ALTER COLUMN CityName VARCHAR(100) NOT NULL;
-GO
-
-ALTER TABLE City
-ALTER COLUMN State VARCHAR(100) NOT NULL;
-GO
-
-ALTER TABLE City
-ALTER COLUMN AirportCharge DECIMAL(18, 2) NOT NULL;
-GO
 
 Scaffold-DbContext -Connection "server=(local)\sqlexpress; database=CityDb; integrated security=sspi; trustservercertificate=true" -Provider Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -ContextDir Models -Context CityDbContext -Tables "City" -Namespace CityService -ContextNamespace CityService
+
+
+Fare DB
+
+
+-- Create the FareDb database
+CREATE DATABASE FareDb;
+GO
+
+USE FareDb;
+GO
+
+-- Create the Fare table
+CREATE TABLE Fare (
+    FareID INT PRIMARY KEY IDENTITY(1,1),
+    FlightID INT NOT NULL,
+    BasePrice DECIMAL(18, 2) NOT NULL,
+    ConvenienceFee DECIMAL(18, 2) NOT NULL
+);
+GO
+
+-- Insert dummy data into the Fare table
+INSERT INTO Fare (FlightID, BasePrice, ConvenienceFee) 
+VALUES
+    (101, 250.00, 30.00),  -- Flight 101
+    (102, 300.00, 35.00),  -- Flight 102
+    (103, 200.00, 25.00),  -- Flight 103
+    (104, 500.00, 50.00),  -- Flight 104
+    (105, 150.00, 20.00);  -- Flight 105
+GO
+
+
+
+
+Flights DB
+
+-- Create the FlightDb database
+CREATE DATABASE FlightDb;
+GO
+
+USE FlightDb;
+GO
+
+-- Create the Flight table
+CREATE TABLE Flight (
+    FlightID INT PRIMARY KEY IDENTITY(1,1),
+    FlightNo VARCHAR(20) NOT NULL,
+    FromCity VARCHAR(100) NOT NULL,
+    ToCity VARCHAR(100) NOT NULL,
+    DepartureDate DATE NOT NULL,
+    DepartureTime TIME NOT NULL,
+    ArrivalTime TIME NOT NULL,
+    AvailableSeats INT NOT NULL,
+    IsActive BIT NOT NULL
+);
+GO
+
+
+-- Insert dummy data into the Flight table
+INSERT INTO Flight (FlightNo, FromCity, ToCity, DepartureDate, DepartureTime, ArrivalTime, AvailableSeats, IsActive)
+VALUES
+    ('AI101', 'Delhi', 'Mumbai', '2025-03-01', '06:30', '08:00', 150, 1),
+    ('AI101', 'Mumbai', 'Delhi', '2025-03-02', '09:30', '11:00', 150, 1),
+    ('AI102', 'Delhi', 'Bengaluru', '2025-03-01', '07:00', '09:00', 140, 1),
+    ('AI102', 'Bengaluru', 'Delhi', '2025-03-03', '08:30', '10:00', 140, 1),
+    ('AI103', 'Mumbai', 'Chennai', '2025-03-02', '10:00', '12:00', 160, 1),
+    ('AI103', 'Chennai', 'Mumbai', '2025-03-04', '11:00', '13:00', 160, 1),
+    ('AI104', 'Delhi', 'Hyderabad', '2025-03-03', '12:00', '14:00', 180, 1),
+    ('AI104', 'Hyderabad', 'Delhi', '2025-03-04', '13:00', '15:00', 180, 1),
+    ('AI105', 'Chennai', 'Kolkata', '2025-03-01', '15:30', '17:00', 170, 1),
+    ('AI105', 'Kolkata', 'Chennai', '2025-03-02', '16:30', '18:00', 170, 1),
+    ('AI106', 'Delhi', 'Goa', '2025-03-02', '17:00', '18:30', 200, 1),
+    ('AI106', 'Goa', 'Delhi', '2025-03-05', '18:00', '19:30', 200, 1),
+    ('AI107', 'Mumbai', 'Bengaluru', '2025-03-01', '18:30', '20:00', 150, 1),
+    ('AI107', 'Bengaluru', 'Mumbai', '2025-03-03', '19:00', '20:30', 150, 1),
+    ('AI108', 'Hyderabad', 'Delhi', '2025-03-01', '07:30', '09:00', 140, 1),
+    ('AI108', 'Delhi', 'Hyderabad', '2025-03-04', '08:00', '09:30', 140, 1),
+    ('AI109', 'Mumbai', 'Chennai', '2025-03-05', '10:30', '12:00', 160, 1),
+    ('AI109', 'Chennai', 'Mumbai', '2025-03-06', '11:00', '12:30', 160, 1),
+    ('AI110', 'Delhi', 'Jaipur', '2025-03-02', '06:00', '07:00', 150, 1),
+    ('AI110', 'Jaipur', 'Delhi', '2025-03-03', '07:30', '08:30', 150, 1),
+    ('AI111', 'Delhi', 'Lucknow', '2025-03-05', '09:30', '11:00', 100, 1),
+    ('AI111', 'Lucknow', 'Delhi', '2025-03-06', '10:00', '11:30', 100, 1),
+    ('AI112', 'Mumbai', 'Delhi', '2025-03-03', '12:00', '13:30', 180, 1),
+    ('AI112', 'Delhi', 'Mumbai', '2025-03-04', '13:00', '14:30', 180, 1),
+    ('AI113', 'Chennai', 'Goa', '2025-03-01', '15:00', '16:30', 150, 1),
+    ('AI113', 'Goa', 'Chennai', '2025-03-02', '16:00', '17:30', 150, 1),
+    ('AI114', 'Hyderabad', 'Chennai', '2025-03-04', '07:00', '08:30', 160, 1),
+    ('AI114', 'Chennai', 'Hyderabad', '2025-03-05', '08:00', '09:30', 160, 1),
+    ('AI115', 'Delhi', 'Pune', '2025-03-02', '09:00', '10:00', 180, 1),
+    ('AI115', 'Pune', 'Delhi', '2025-03-03', '10:30', '11:30', 180, 1),
+    ('AI116', 'Bengaluru', 'Goa', '2025-03-01', '12:00', '13:30', 200, 1),
+    ('AI116', 'Goa', 'Bengaluru', '2025-03-04', '13:00', '14:30', 200, 1),
+    ('AI117', 'Kolkata', 'Mumbai', '2025-03-03', '14:00', '15:30', 170, 1),
+    ('AI117', 'Mumbai', 'Kolkata', '2025-03-05', '15:00', '16:30', 170, 1),
+    ('AI118', 'Goa', 'Chennai', '2025-03-02', '16:00', '17:30', 150, 1),
+    ('AI118', 'Chennai', 'Goa', '2025-03-06', '17:00', '18:30', 150, 1),
+    ('AI119', 'Delhi', 'Chennai', '2025-03-03', '17:30', '19:00', 200, 1),
+    ('AI119', 'Chennai', 'Delhi', '2025-03-04', '18:00', '19:30', 200, 1),
+    ('AI120', 'Mumbai', 'Hyderabad', '2025-03-02', '07:00', '08:30', 180, 1),
+    ('AI120', 'Hyderabad', 'Mumbai', '2025-03-03', '08:30', '10:00', 180, 1),
+    ('AI121', 'Delhi', 'Bengaluru', '2025-03-04', '10:00', '11:30', 150, 1),
+    ('AI121', 'Bengaluru', 'Delhi', '2025-03-06', '11:00', '12:30', 150, 1),
+    ('AI122', 'Mumbai', 'Chennai', '2025-03-01', '09:00', '10:30', 160, 1),
+    ('AI122', 'Chennai', 'Mumbai', '2025-03-03', '10:30', '12:00', 160, 1),
+    ('AI123', 'Delhi', 'Hyderabad', '2025-03-01', '06:30', '08:00', 180, 1),
+    ('AI123', 'Hyderabad', 'Delhi', '2025-03-04', '07:30', '09:00', 180, 1),
+    ('AI124', 'Mumbai', 'Delhi', '2025-03-02', '08:00', '09:30', 170, 1),
+    ('AI124', 'Delhi', 'Mumbai', '2025-03-05', '09:30', '11:00', 170, 1),
+    ('AI125', 'Chennai', 'Goa', '2025-03-04', '12:30', '14:00', 150, 1);
+GO
+
