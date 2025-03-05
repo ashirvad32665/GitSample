@@ -52,3 +52,4 @@ ALTER TABLE City
 ALTER COLUMN AirportCharge DECIMAL(18, 2) NOT NULL;
 GO
 
+Scaffold-DbContext -Connection "server=(local)\sqlexpress; database=CityDb; integrated security=sspi; trustservercertificate=true" -Provider Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -ContextDir Models -Context CityDbContext -Tables "City" -Namespace CityService -ContextNamespace CityService
