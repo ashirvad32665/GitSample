@@ -150,3 +150,104 @@ VALUES
     ('AI125', 'Chennai', 'Goa', '2025-03-04', '12:30', '14:00', 150, 1);
 GO
 
+
+
+
+Booking DB
+
+CREATE DATABASE BookingDb;
+GO
+
+USE BookingDb;
+GO
+
+-- Create the Booking table
+CREATE TABLE Booking (
+    BookingId INT PRIMARY KEY IDENTITY(1,1),
+    UserId INT NOT NULL,
+    FlightId INT NOT NULL,
+    FareId INT NOT NULL,
+    Status VARCHAR(50) NOT NULL,
+    IsActive BIT NOT NULL,
+    
+);
+GO
+
+-- Create the Passenger table
+CREATE TABLE Passenger (
+    PassengerId INT PRIMARY KEY IDENTITY(1,1),
+    BookingId INT NOT NULL,
+    FirstName VARCHAR(100) NOT NULL,
+    LastName VARCHAR(100) NOT NULL,
+    Gender VARCHAR(10) NOT NULL,
+    SeatNo VARCHAR(10) NOT NULL,
+    IsActive BIT NOT NULL,
+    
+);
+GO
+
+-- Insert dummy data into the Booking table
+INSERT INTO Booking (UserId, FlightId, FareId, Status, IsActive)
+VALUES
+    (1, 101, 1, 'Confirmed', 1),
+    (2, 102, 2, 'Cancelled', 0),
+    (3, 103, 3, 'Pending', 1),
+    (4, 104, 4, 'Confirmed', 1),
+    (5, 105, 5, 'Confirmed', 1),
+    (6, 106, 6, 'Pending', 1),
+    (7, 107, 7, 'Confirmed', 1),
+    (8, 108, 8, 'Cancelled', 0),
+    (9, 109, 9, 'Confirmed', 1),
+    (10, 110, 10, 'Pending', 1);
+GO
+
+-- Insert dummy data into the Passenger table
+INSERT INTO Passenger (BookingId, FirstName, LastName, Gender, SeatNo, IsActive)
+VALUES
+    (1, 'John', 'Doe', 'Male', '12A', 1),
+    (1, 'Jane', 'Doe', 'Female', '12B', 1),
+    (2, 'Tom', 'Smith', 'Male', '14C', 0),
+    (3, 'Anna', 'Johnson', 'Female', '15D', 1),
+    (4, 'James', 'Brown', 'Male', '16E', 1),
+    (5, 'Mary', 'Davis', 'Female', '17F', 1),
+    (6, 'Michael', 'Miller', 'Male', '18G', 1),
+    (7, 'Emily', 'Wilson', 'Female', '19H', 1),
+    (8, 'David', 'Taylor', 'Male', '20I', 0),
+    (9, 'Sarah', 'Anderson', 'Female', '21J', 1),
+    (10, 'William', 'Thomas', 'Male', '22K', 1);
+GO
+
+
+-- Verify the data in Booking table
+SELECT * FROM Booking;
+
+-- Verify the data in Passenger table
+SELECT * FROM Passenger;
+GO
+
+CREATE DATABASE CheckInDb;
+GO
+
+Use CheckInDb;
+Go
+
+CREATE TABLE CheckIn (
+    CheckInId INT PRIMARY KEY IDENTITY(1001,1),
+    BookingId INT NOT NULL,
+    Status VARCHAR(50) NOT NULL,
+    IsActive BIT NOT NULL DEFAULT 1, 
+);
+GO
+
+
+-- Insert dummy data into CheckIn table
+INSERT INTO CheckIn (BookingId, Status, IsActive)
+VALUES
+    (1, 'Checked-in', 1),  -- Active check-in
+    (2, 'Not Checked-in', 0),  -- Inactive check-in (IsActive = false)
+    (3, 'Checked-in', 1);  -- Active check-in
+    
+GO
+
+select * from CheckIn
+
