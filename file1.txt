@@ -83,7 +83,7 @@ GO
 
 -- Create the Flight table
 CREATE TABLE Flight (
-    FlightID INT PRIMARY KEY IDENTITY(1,1),
+    FlightID INT PRIMARY KEY IDENTITY(101,1),
     FlightNo VARCHAR(20) NOT NULL,
     FromCity VARCHAR(100) NOT NULL,
     ToCity VARCHAR(100) NOT NULL,
