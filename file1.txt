@@ -251,3 +251,61 @@ GO
 
 select * from CheckIn
 
+-- Create the database
+CREATE DATABASE UserDb;
+GO
+
+-- Use the created database
+USE UserDb;
+GO
+
+-- Create Users table
+CREATE TABLE Users (
+    UserId INT IDENTITY(1,1) PRIMARY KEY,          -- Primary key with auto-increment
+    Username NVARCHAR(255) NOT NULL,                -- Username, not null
+    Password NVARCHAR(255) NOT NULL,                -- Password, not null (should be encrypted in a real application)
+    Email NVARCHAR(255) NOT NULL,                   -- Email, not null
+    CONSTRAINT UQ_Username UNIQUE (Username),      -- Unique constraint for Username
+    CONSTRAINT UQ_Email UNIQUE (Email)             -- Unique constraint for Email
+);
+GO
+
+-- Create Roles table
+CREATE TABLE Roles (
+    RoleId INT IDENTITY(11,1) PRIMARY KEY,          -- Primary key with auto-increment
+    RoleName NVARCHAR(255) NOT NULL,                -- Role name, not null
+    CONSTRAINT UQ_RoleName UNIQUE (RoleName)       -- Unique constraint for RoleName
+);
+GO
+
+-- Create UserRoles table
+CREATE TABLE UserRoles (
+    UserId INT NOT NULL,                           -- Foreign key to Users table
+    RoleId INT NOT NULL,                           -- Foreign key to Roles table
+    PRIMARY KEY (UserId, RoleId),                  -- Composite primary key
+    
+);
+GO
+-- Insert dummy data into Users table
+INSERT INTO Users (Username, Password, Email)
+VALUES 
+    ('john_doe', 'password123', 'john.doe@example.com'),
+    ('jane_smith', 'securepassword456', 'jane.smith@example.com');
+GO
+
+-- Insert dummy data into Roles table
+INSERT INTO Roles (RoleName)
+VALUES 
+    ('Admin'),
+    ('User');
+GO
+
+-- Insert dummy data into UserRoles table
+-- Assuming the first user (john_doe) gets the 'Admin' role and the second user (jane_smith) gets the 'User' role.
+INSERT INTO UserRoles (UserId, RoleId)
+VALUES
+    ((SELECT UserId FROM Users WHERE Username = 'john_doe'), (SELECT RoleId FROM Roles WHERE RoleName = 'Admin')),
+    ((SELECT UserId FROM Users WHERE Username = 'jane_smith'), (SELECT RoleId FROM Roles WHERE RoleName = 'User'));
+GO
+
+
