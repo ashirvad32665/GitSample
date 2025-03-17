@@ -308,4 +308,48 @@ VALUES
     ((SELECT UserId FROM Users WHERE Username = 'jane_smith'), (SELECT RoleId FROM Roles WHERE RoleName = 'User'));
 GO
 
+CREATE DATABASE CheckInDb;
+GO
+USE CheckInDb;
+GO
 
+CREATE TABLE CheckIn (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    CheckInId NVARCHAR(20) UNIQUE NOT NULL, -- Unique Check-in ID
+    ReferenceNumber NVARCHAR(20) NOT NULL,  -- Booking Reference Number
+    SeatNumber NVARCHAR(5) NOT NULL,        -- Assigned Seat Number
+    CheckInTime DATETIME DEFAULT GETDATE()  -- Timestamp of Check-in
+);
+
+INSERT INTO CheckIn (CheckInId, ReferenceNumber, SeatNumber, CheckInTime)
+VALUES ('CHK12345', 'AB20251234', 'A12', GETDATE());
+
+
+
+
+
+  DELETE FROM Passenger
+WHERE PassengerId in (101,102,103,104,105);
+
+Alter Table Passenger
+Add CheckInId varchar(8);
+
+ALTER TABLE Passenger
+ALTER COLUMN ReferenceNumber NVARCHAR(10) NOT NULL;
+
+
+ALTER TABLE Passenger
+DROP CONSTRAINT FK__Passenger__Booki__3D5E1FD2;
+
+ALTER TABLE Passenger
+ADD CONSTRAINT FK__Passenger__Booki__3D5E1FD2 FOREIGN KEY (ReferenceNumber) REFERENCES Booking(ReferenceNumber);
+
+
+Alter table Passenger
+drop column ReferenceNumber;
+
+
+ALTER TABLE Passenger
+Add ReferenceNumber NVARCHAR(20) NOT NULL;
+
+select * from Passenger; 
